@@ -1,0 +1,13 @@
+/* #f6f6f7 #A4A6AC #D4C4B4 #5E5353 #1E1714 #5A497E #FEA31F #FBBC2E*/
+
+.app {
+  background: #f6f6f7;
+  display: flex;
+  padding: 30px;
+}
+
+@media screen and (max-width: 1015px) {
+  .app {
+    flex-direction: column;
+  }
+}
