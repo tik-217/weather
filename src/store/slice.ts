@@ -9,9 +9,15 @@ const slice = createSlice({
     setWeather(state, action: PayloadAction<IWeather>) {
       state.weather = action.payload;
     },
+    setCityName(state, action: PayloadAction<string>) {
+      state.cityName = action.payload;
+    },
+    setNoSuchCity(state, action: PayloadAction<string>) {
+      state.noSuchCity = action.payload;
+    },
   },
 });
 
-export const { setWeather } = slice.actions;
+export const { setWeather, setCityName, setNoSuchCity } = slice.actions;
 
 export default slice.reducer;

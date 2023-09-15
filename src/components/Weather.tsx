@@ -1,5 +1,5 @@
 // react
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // store
 import { useAppDispatch, useAppSelector } from "../store/store";
@@ -11,12 +11,15 @@ import "../styles/Weather.css";
 import wind from "../assets/image/icons/weather-wind-flow-6.svg";
 import arrowTop from "../assets/image/icons/arrow-button-circle-up-1.svg";
 import arrowDown from "../assets/image/icons/arrow-button-circle-down-1.svg";
-import weatherData from "../api/weather-data";
+import { weatherDataLatLon } from "../api/weather-data";
 import { setWeather } from "../store/slice";
+import geocoding from "../api/geocoding";
+import getCurrentPosition from "../services/getCurrentPosition";
 
 export default function Weather() {
   const [changeMetric, setChangeMetric] = useState(true);
 
+  const cityName = useAppSelector((state) => state.cityName);
   const weather = useAppSelector((state) => state.weather);
   const dispatch = useAppDispatch();
 
@@ -34,10 +37,27 @@ export default function Weather() {
 
   useEffect(() => {
     (async () => {
-      if (changeMetric) {
-        dispatch(setWeather(await weatherData("metric")));
+      let lat = 0;
+      let lon = 0;
+
+      if (cityName === "Current location") {
+        const currLocation = await getCurrentPosition();
+
+        lat = currLocation.lat;
+        lon = currLocation.lon;
       } else {
-        dispatch(setWeather(await weatherData("imperial")));
+        const location = await geocoding(cityName);
+
+        if (location instanceof Object) {
+          lat = location.lat;
+          lon = location.lon;
+        }
+      }
+
+      if (changeMetric) {
+        dispatch(setWeather(await weatherDataLatLon(lat, lon, "metric")));
+      } else {
+        dispatch(setWeather(await weatherDataLatLon(lat, lon, "imperial")));
       }
     })();
     // eslint-disable-next-line
@@ -46,7 +66,7 @@ export default function Weather() {
   return (
     <div className="weather">
       <div className="weather_head">
-        <h3>Метеоданные</h3>
+        <h3>Weather data</h3>
         <div className="weather_head__tmpSwitcher">
           <span
             className={changeMetric ? "weather_head__active" : ""}
@@ -64,11 +84,7 @@ export default function Weather() {
       </div>
       <div className="weather_main">
         <div className="weather5days">
-          {weather.list.map((el, i) => {
-            if ((i + 1) % 7) {
-              return <React.Fragment key={el.dt}></React.Fragment>;
-            }
-
+          {weather.list.map((el) => {
             return (
               <div key={el.dt}>
                 <h5>{getDayOfTheWeek(el.dt)}</h5>
@@ -80,8 +96,8 @@ export default function Weather() {
                   />
                 )}
                 <section>
-                  <span>10°</span>
-                  <span>-4°</span>
+                  <span>{Math.floor(el.main.temp_max)}°</span>
+                  <span>{Math.floor(el.main.temp_min)}°</span>
                 </section>
               </div>
             );

@@ -12,4 +12,5 @@ export default async function geocoding(city: string) {
       lon: data[0].lon,
     };
   });
+  // .catch(() => console.log("There is no such city"));
 }

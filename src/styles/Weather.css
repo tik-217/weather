@@ -10,8 +10,8 @@
 }
 
 .weather_head h3 {
-  margin: 0;
-  font-size: 30px;
+  margin: 0 20px 0;
+  font-size: 1.9em;
 }
 
 .weather_head span {
@@ -19,7 +19,7 @@
   background: #fff;
   border-radius: 50%;
   margin-left: 10px;
-  font-size: 18px;
+  font-size: 1.1em;
   font-weight: bold;
 }
 
@@ -50,14 +50,14 @@
 }
 
 .weather5days > div > h5 {
-  font-size: 18px;
+  font-size: 1.1em;
   margin: 0;
 }
 
 .weather5days > div > p {
   color: #a4a6ac;
   margin: 5px 0 15px;
-  font-size: 14px;
+  font-size: 0.9em;
 }
 
 .weather5days > div > img {
@@ -80,18 +80,26 @@
   padding: 20px;
   background: #fff;
   border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .weatherMetoToday h4 {
   color: #a4a6ac;
   margin: 0;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: normal;
 }
 
 .weatherMetoToday_wind p {
-  font-size: 40px;
-  margin: 30px 0;
+  font-size: 2.5em;
+  margin: 20px 0;
+}
+
+.weatherMetoToday_wind img {
+  align-self: flex-start;
+  height: 40px;
 }
 
 .weatherMetoToday_sun section {
@@ -110,11 +118,11 @@
 }
 
 .weatherMetoToday_sun section span {
-  font-size: 20px;
+  font-size: 1.2em;
 }
 
 .weatherMetoToday_humidity p {
-  font-size: 40px;
+  font-size: 2.5em;
 }
 
 .weatherMetoToday_humidity > div {
@@ -125,7 +133,7 @@
 }
 
 .weatherMetoToday_visibility p {
-  font-size: 40px;
+  font-size: 2.5em;
 }
 
 .weatherMetoToday_visibility > div {
@@ -141,9 +149,9 @@
   }
 }
 
-@media screen and (max-width: 1011px) {
+@media screen and (max-width: 1015px) {
   .weather5days {
-    width: 60vw;
+    width: 100%;
   }
 }
 
@@ -154,5 +162,19 @@
 
   .weatherMetoToday {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .weather5days > div {
+    padding: 20px 15px;
+  }
+
+  .weatherMetoToday_wind p {
+    font-size: 2.3em;
+  }
+
+  .weatherMetoToday_sun section {
+    margin-top: 10px;
   }
 }

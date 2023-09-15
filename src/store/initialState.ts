@@ -1,4 +1,6 @@
 const initialState = {
+  cityName: "Moscow",
+  noSuchCity: "",
   weather: {
     cod: "",
     message: 0,
