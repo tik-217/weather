@@ -1,4 +1,5 @@
 import { IWeather } from "../types";
+import getWeatherData from "./asyncThunk";
 import initialState from "./initialState";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
@@ -12,12 +13,23 @@ const slice = createSlice({
     setCityName(state, action: PayloadAction<string>) {
       state.cityName = action.payload;
     },
-    setNoSuchCity(state, action: PayloadAction<string>) {
-      state.noSuchCity = action.payload;
-    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getWeatherData.pending, (state) => {
+      state.searchCityErr = "";
+      state.loadingWeather = true;
+    });
+    builder.addCase(getWeatherData.fulfilled, (state, action) => {
+      state.searchCityErr = "";
+      state.loadingWeather = false;
+      state.weather = action.payload;
+    });
+    builder.addCase(getWeatherData.rejected, (state) => {
+      state.searchCityErr = "Error accessing the API";
+    });
   },
 });
 
-export const { setWeather, setCityName, setNoSuchCity } = slice.actions;
+export const { setWeather, setCityName } = slice.actions;
 
 export default slice.reducer;

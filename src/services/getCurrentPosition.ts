@@ -3,15 +3,18 @@ export default async function getCurrentPosition() {
   let lon = 0;
 
   const nav = new Promise((res, rej) => {
-    navigator.geolocation.getCurrentPosition(
-      (e: GeolocationPosition) => res(e),
-      rej
-    );
-  });
-  nav.then((data: any) => {
+    navigator.geolocation.getCurrentPosition(res, rej);
+  }).then((data: any) => {
+    console.log(data.coords.latitude, data.coords.longitude);
+
     lat = data.coords.latitude;
     lon = data.coords.longitude;
+
+    return { lat, lon };
   });
+
+  lat = (await nav).lat;
+  lon = (await nav).lon;
 
   return {
     lat,

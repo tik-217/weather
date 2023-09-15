@@ -11,10 +11,8 @@ import "../styles/Weather.css";
 import wind from "../assets/image/icons/weather-wind-flow-6.svg";
 import arrowTop from "../assets/image/icons/arrow-button-circle-up-1.svg";
 import arrowDown from "../assets/image/icons/arrow-button-circle-down-1.svg";
-import { weatherDataLatLon } from "../api/weather-data";
-import { setWeather } from "../store/slice";
-import geocoding from "../api/geocoding";
 import getCurrentPosition from "../services/getCurrentPosition";
+import getWeatherData from "../store/asyncThunk";
 
 export default function Weather() {
   const [changeMetric, setChangeMetric] = useState(true);
@@ -37,27 +35,14 @@ export default function Weather() {
 
   useEffect(() => {
     (async () => {
-      let lat = 0;
-      let lon = 0;
-
       if (cityName === "Current location") {
-        const currLocation = await getCurrentPosition();
-
-        lat = currLocation.lat;
-        lon = currLocation.lon;
-      } else {
-        const location = await geocoding(cityName);
-
-        if (location instanceof Object) {
-          lat = location.lat;
-          lon = location.lon;
-        }
+        await getCurrentPosition();
       }
 
       if (changeMetric) {
-        dispatch(setWeather(await weatherDataLatLon(lat, lon, "metric")));
+        dispatch(getWeatherData({ cityName, units: "metric" }));
       } else {
-        dispatch(setWeather(await weatherDataLatLon(lat, lon, "imperial")));
+        dispatch(getWeatherData({ cityName, units: "imperial" }));
       }
     })();
     // eslint-disable-next-line

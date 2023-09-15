@@ -54,3 +54,15 @@ export interface IWeather {
     sunset: number;
   };
 }
+
+export interface IWeatherData {
+  weatherData: IWeather;
+  // endOfLoad: boolean;
+  // error: boolean;
+  // errorType: string;
+}
+
+export interface IGetWeatherData {
+  cityName: string;
+  units?: string;
+}
