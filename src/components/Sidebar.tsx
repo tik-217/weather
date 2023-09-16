@@ -129,12 +129,14 @@ export default function Sidebar() {
               onKeyDown={(e) => searchCity(e)}
             />
           </div>
-          <img
-            src={geoposition}
-            alt="geoposition"
-            onClick={() => getPosition()}
-            onTouchEnd={() => getPosition()}
-          />
+          <button onTouchEnd={() => getPosition()}>
+            <img
+              src={geoposition}
+              alt="geoposition"
+              onClick={() => getPosition()}
+              onTouchEnd={() => getPosition()}
+            />
+          </button>
         </div>
         <div className="sidebar_weather">
           {weather instanceof Object && (
