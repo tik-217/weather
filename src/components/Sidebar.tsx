@@ -138,6 +138,7 @@ export default function Sidebar() {
             onTouchEnd={() => qq((q) => (q += 1))}
           />
           {q}
+          <button onTouchEnd={() => getPosition()}></button>
         </div>
         <div className="sidebar_weather">
           {weather instanceof Object && (
