@@ -34,6 +34,8 @@ export default function Sidebar() {
   const weather = useAppSelector((state) => state.weather);
   const dispatch = useAppDispatch();
 
+  const [q, qq] = useState(0);
+
   // antd
   const [messageApi, messageNotifications] = message.useMessage();
 
@@ -129,14 +131,13 @@ export default function Sidebar() {
               onKeyDown={(e) => searchCity(e)}
             />
           </div>
-          <button onTouchEnd={() => getPosition()}>
-            <img
-              src={geoposition}
-              alt="geoposition"
-              onClick={() => getPosition()}
-              onTouchEnd={() => getPosition()}
-            />
-          </button>
+          <img
+            src={geoposition}
+            alt="geoposition"
+            onClick={() => getPosition()}
+            onTouchEnd={() => qq((q) => (q += 1))}
+          />
+          {q}
         </div>
         <div className="sidebar_weather">
           {weather instanceof Object && (
