@@ -56,6 +56,7 @@ export default function Sidebar() {
 
   useEffect(() => {
     dispatch(getWeatherData({ cityName }));
+    // eslint-disable-next-line
   }, []);
 
   return (

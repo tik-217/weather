@@ -7,7 +7,7 @@ import getWeatherData from "../store/asyncThunk";
 
 // services
 import getCurrentPosition from "../services/getCurrentPosition";
-import { getDate, getDayOfTheWeek, getTime } from "../services/getTimeFormat";
+import { getWeatherTime, getDayOfTheWeek } from "../services/getTimeFormat";
 
 // style
 import "../styles/Weather.css";
@@ -64,7 +64,7 @@ export default function Weather() {
             return (
               <div key={el.dt}>
                 <h5>{getDayOfTheWeek(el.dt)}</h5>
-                <p>{getDate(el.dt)}</p>
+                <p>{getWeatherTime(el.dt)}</p>
                 {el.weather[0].icon && (
                   <img
                     src={`http://openweathermap.org/img/wn/${el.weather[0].icon}@2x.png`}
@@ -89,11 +89,11 @@ export default function Weather() {
             <h4>Sunrise & Sunset</h4>
             <section>
               <img src={arrowTop} alt="arrowTop" />
-              <span>{getTime(weather.city.sunrise)}</span>
+              <span>{getWeatherTime(weather.city.sunrise)}</span>
             </section>
             <section>
               <img src={arrowDown} alt="arrowDown" />
-              <span>{getTime(weather.city.sunset)}</span>
+              <span>{getWeatherTime(weather.city.sunset)}</span>
             </section>
           </div>
           <div className="weatherMetoToday_humidity">
