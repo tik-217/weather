@@ -66,3 +66,10 @@ export interface IGetWeatherData {
   cityName: string;
   units?: string;
 }
+
+export interface IInitialState {
+  cityName: string;
+  searchCityErr: null | string;
+  loadingWeather: boolean;
+  weather: IWeather;
+}

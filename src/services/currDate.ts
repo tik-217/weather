@@ -1,8 +1,7 @@
-export function currDate() {
-  const date = new Date();
+export function currDate(date: Date) {
   const day = new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
     date
   );
 
-  return `${day}, ${date.getHours()}:${date.getMinutes()}`;
+  return `${day}, ${date.toLocaleTimeString().slice(0, 5)}`;
 }

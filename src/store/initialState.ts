@@ -1,6 +1,8 @@
-const initialState = {
+import { IInitialState } from "../types";
+
+const initialState: IInitialState = {
   cityName: "Moscow",
-  searchCityErr: "",
+  searchCityErr: null,
   loadingWeather: false,
   weather: {
     cod: "",

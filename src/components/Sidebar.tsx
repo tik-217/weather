@@ -1,9 +1,10 @@
 // react
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // store
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { setCityName, setWeather } from "../store/slice";
+import getWeatherData from "../store/asyncThunk";
 
 // style
 import "../styles/Sidebar.css";
@@ -12,17 +13,21 @@ import "../styles/Sidebar.css";
 import magnifier from "../assets/image/icons/icons8-magnifier.svg";
 import geoposition from "../assets/image/icons/geoposition.svg";
 import geophoto from "../assets/image/carlos-torres-MHNjEBeLTgw-unsplash.jpg";
+
+// api
 import { weatherDataLatLon } from "../api/weather-data";
-import getCurrentPosition from "../services/getCurrentPosition";
 
 // services
 import { currDate } from "../services/currDate";
+import getCurrentPosition from "../services/getCurrentPosition";
 
 // antd
 import { message } from "antd";
-import getWeatherData from "../store/asyncThunk";
 
 export default function Sidebar() {
+  const [currTime, setCurrTime] = useState(new Date());
+  const [interval, setInterval] = useState("");
+
   const loading = useAppSelector((state) => state.loadingWeather);
   const searchCityErr = useAppSelector((state) => state.searchCityErr);
   const cityName = useAppSelector((state) => state.cityName);
@@ -55,40 +60,59 @@ export default function Sidebar() {
 
     dispatch(setWeather(await weatherDataLatLon(lat, lon)));
     dispatch(setCityName("Current location"));
-    console.log(weather);
   }
 
   useEffect(() => {
     (async () => {
       dispatch(getWeatherData({ cityName }));
     })();
-    // eslint-disable-next-line
+
+    const timer = window.setInterval(function () {
+      setCurrTime(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
   useEffect(() => {
-    if (searchCityErr.length === 0) return;
+    setInterval(currDate(currTime));
+  }, [currTime]);
+
+  useEffect(() => {
     if (loading === false) return;
 
     messageApi
       .open({
         type: "loading",
         content: "Loading...",
-        duration: 1,
+        duration: 0.5,
       })
-      .then(() => message.success("Loading finished", 1));
+      .then(() => message.success("Loading finished", 0.8));
   }, [loading]);
 
   useEffect(() => {
-    if (searchCityErr.length === 0) return;
+    if (searchCityErr === null) return;
 
     messageApi.open({
       type: "error",
       content: searchCityErr,
-      duration: 1,
+      duration: 2.5,
     });
   }, [searchCityErr]);
 
-  useEffect(() => {}, [cityName]);
+  useEffect(() => {
+    if (cityName === "Current location") {
+      messageApi
+        .open({
+          type: "loading",
+          content: "Loading...",
+          duration: 0.5,
+        })
+        .then(() => message.success("Loading finished", 0.8));
+    }
+  }, [cityName]);
 
   return (
     <>
@@ -99,8 +123,6 @@ export default function Sidebar() {
             <img src={magnifier} alt="magnifier" />
             <input
               type="text"
-              name=""
-              id=""
               placeholder="Search city..."
               value={cityName}
               onChange={(e) => dispatch(setCityName(e.target.value))}
@@ -126,7 +148,7 @@ export default function Sidebar() {
               </div>
               <section className="weatherInfo_desc">
                 <h2>{Math.floor(weather.list[0].main.temp)}°</h2>
-                <p>{currDate()}</p>
+                <p>{interval}</p>
                 <hr />
                 <div className="weatherInfo_desc__meta1">
                   <span>

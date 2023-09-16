@@ -4,7 +4,6 @@ import { IGetWeatherData } from "../types";
 
 const getWeatherData = createAsyncThunk(
   "slice/weatherApi",
-  // eslint
   async ({ cityName, units }: IGetWeatherData) => {
     const weatherData = await weatherDataCity(cityName, units);
     return weatherData;

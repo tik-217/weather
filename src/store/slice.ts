@@ -16,15 +16,15 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getWeatherData.pending, (state) => {
-      state.searchCityErr = "";
+      state.searchCityErr = null;
       state.loadingWeather = true;
     });
     builder.addCase(getWeatherData.fulfilled, (state, action) => {
-      state.searchCityErr = "";
       state.loadingWeather = false;
       state.weather = action.payload;
     });
     builder.addCase(getWeatherData.rejected, (state) => {
+      state.loadingWeather = false;
       state.searchCityErr = "Error accessing the API";
     });
   },
