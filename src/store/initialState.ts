@@ -3,6 +3,7 @@ import { IInitialState } from "../types";
 const initialState: IInitialState = {
   cityName: "Moscow",
   searchCityErr: null,
+  isSearch: false,
   loadingWeather: false,
   weather: {
     cod: "",

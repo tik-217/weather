@@ -55,13 +55,6 @@ export interface IWeather {
   };
 }
 
-export interface IWeatherData {
-  weatherData: IWeather;
-  // endOfLoad: boolean;
-  // error: boolean;
-  // errorType: string;
-}
-
 export interface IGetWeatherData {
   cityName: string;
   units?: string;
@@ -70,6 +63,7 @@ export interface IGetWeatherData {
 export interface IInitialState {
   cityName: string;
   searchCityErr: null | string;
+  isSearch: boolean;
   loadingWeather: boolean;
   weather: IWeather;
 }

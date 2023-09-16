@@ -3,6 +3,11 @@ import { useEffect, useState } from "react";
 
 // store
 import { useAppDispatch, useAppSelector } from "../store/store";
+import getWeatherData from "../store/asyncThunk";
+
+// services
+import getCurrentPosition from "../services/getCurrentPosition";
+import { getDate, getDayOfTheWeek, getTime } from "../services/getTimeFormat";
 
 // style
 import "../styles/Weather.css";
@@ -11,27 +16,13 @@ import "../styles/Weather.css";
 import wind from "../assets/image/icons/weather-wind-flow-6.svg";
 import arrowTop from "../assets/image/icons/arrow-button-circle-up-1.svg";
 import arrowDown from "../assets/image/icons/arrow-button-circle-down-1.svg";
-import getCurrentPosition from "../services/getCurrentPosition";
-import getWeatherData from "../store/asyncThunk";
 
 export default function Weather() {
+  // state
   const [changeMetric, setChangeMetric] = useState(true);
-
   const cityName = useAppSelector((state) => state.cityName);
   const weather = useAppSelector((state) => state.weather);
   const dispatch = useAppDispatch();
-
-  function getTime(timezone: number) {
-    return new Date(timezone * 1000).toTimeString().slice(0, 5);
-  }
-
-  function getDayOfTheWeek(timezone: number) {
-    return new Date(timezone * 1000).toDateString().slice(0, 3);
-  }
-
-  function getDate(timezone: number) {
-    return new Date(timezone * 1000).toLocaleDateString().slice(0, 5);
-  }
 
   useEffect(() => {
     (async () => {

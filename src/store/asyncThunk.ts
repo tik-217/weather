@@ -1,13 +1,15 @@
+// store
 import { createAsyncThunk } from "@reduxjs/toolkit";
+
+// api
 import { weatherDataCity } from "../api/weather-data";
+
+// types
 import { IGetWeatherData } from "../types";
 
-const getWeatherData = createAsyncThunk(
+export default createAsyncThunk(
   "slice/weatherApi",
   async ({ cityName, units }: IGetWeatherData) => {
-    const weatherData = await weatherDataCity(cityName, units);
-    return weatherData;
+    return await weatherDataCity(cityName, units);
   }
 );
-
-export default getWeatherData;

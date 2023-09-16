@@ -2,17 +2,32 @@ export default async function getCurrentPosition() {
   let lat = 0;
   let lon = 0;
 
-  const nav = new Promise((res, rej) => {
-    navigator.geolocation.getCurrentPosition(res, rej);
-  }).then((data: any) => {
-    lat = data.coords.latitude;
-    lon = data.coords.longitude;
-
-    return { lat, lon };
+  const nav = new Promise<GeolocationPosition>((res, rej) => {
+    navigator.geolocation.getCurrentPosition(
+      (data: GeolocationPosition) => res(data),
+      rej
+    );
+  }).catch((err) => {
+    if (err.PERMISSION_DENIED) {
+      console.log("Permission denied.");
+    }
   });
 
-  lat = (await nav).lat;
-  lon = (await nav).lon;
+  lat = await nav.then((position) => {
+    if (position) {
+      return position.coords.latitude;
+    } else {
+      return 0;
+    }
+  });
+
+  lon = await nav.then((position) => {
+    if (position) {
+      return position.coords.longitude;
+    } else {
+      return 0;
+    }
+  });
 
   return {
     lat,

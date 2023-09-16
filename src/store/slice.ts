@@ -1,7 +1,12 @@
-import { IWeather } from "../types";
+// redux
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+
+// store
 import getWeatherData from "./asyncThunk";
 import initialState from "./initialState";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+
+// types
+import { IWeather } from "../types";
 
 const slice = createSlice({
   name: "slice",
@@ -12,6 +17,9 @@ const slice = createSlice({
     },
     setCityName(state, action: PayloadAction<string>) {
       state.cityName = action.payload;
+    },
+    setIsSearch(state, action: PayloadAction<boolean>) {
+      state.isSearch = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -30,6 +38,6 @@ const slice = createSlice({
   },
 });
 
-export const { setWeather, setCityName } = slice.actions;
+export const { setWeather, setCityName, setIsSearch } = slice.actions;
 
 export default slice.reducer;

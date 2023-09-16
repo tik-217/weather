@@ -7,8 +7,6 @@
 body {
   margin: 0;
   font-family: "Bitter";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 html,
