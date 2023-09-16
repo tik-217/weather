@@ -5,8 +5,6 @@ export default async function getCurrentPosition() {
   const nav = new Promise((res, rej) => {
     navigator.geolocation.getCurrentPosition(res, rej);
   }).then((data: any) => {
-    console.log(data.coords.latitude, data.coords.longitude);
-
     lat = data.coords.latitude;
     lon = data.coords.longitude;
 

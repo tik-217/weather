@@ -34,7 +34,7 @@ export default function Sidebar() {
   const weather = useAppSelector((state) => state.weather);
   const dispatch = useAppDispatch();
 
-  const [q, qq] = useState(0);
+  const [q, qq] = useState("");
 
   // antd
   const [messageApi, messageNotifications] = message.useMessage();
@@ -116,6 +116,21 @@ export default function Sidebar() {
     }
   }, [cityName]);
 
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      function () {
+        qq("Доступ разрешён.");
+        //действия с полученными данными
+      },
+      function (error) {
+        // если ошибка (можно проверить код ошибки)
+        if (error.PERMISSION_DENIED) {
+          qq("В доступе отказано!");
+        }
+      }
+    );
+  }, []);
+
   return (
     <>
       <aside className="sidebar">
@@ -135,7 +150,6 @@ export default function Sidebar() {
             src={geoposition}
             alt="geoposition"
             onClick={() => getPosition()}
-            onTouchEnd={() => qq((q) => (q += 1))}
           />
           {q}
           <button onTouchEnd={() => getPosition()}></button>
