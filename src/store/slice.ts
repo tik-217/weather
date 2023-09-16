@@ -21,6 +21,12 @@ const slice = createSlice({
     setIsSearch(state, action: PayloadAction<boolean>) {
       state.isSearch = action.payload;
     },
+    setAppMode(state, action: PayloadAction<string>) {
+      state.appMode = action.payload;
+    },
+    setIsAppMode(state, action: PayloadAction<boolean>) {
+      state.isAppMode = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getWeatherData.pending, (state) => {
@@ -38,6 +44,12 @@ const slice = createSlice({
   },
 });
 
-export const { setWeather, setCityName, setIsSearch } = slice.actions;
+export const {
+  setWeather,
+  setCityName,
+  setIsSearch,
+  setAppMode,
+  setIsAppMode,
+} = slice.actions;
 
 export default slice.reducer;

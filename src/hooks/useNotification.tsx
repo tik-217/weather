@@ -33,6 +33,7 @@ export default function useNotification() {
         duration: 0.5,
       })
       .then(() => message.success("Loading finished", 0.8));
+    // eslint-disable-next-line
   }, [loading]);
 
   // status - error
@@ -44,6 +45,7 @@ export default function useNotification() {
       content: searchCityErr,
       duration: 2.5,
     });
+    // eslint-disable-next-line
   }, [searchCityErr]);
 
   // status - loading (fot the current position)
@@ -57,6 +59,7 @@ export default function useNotification() {
         })
         .then(() => message.success("Loading finished", 0.8));
     }
+    // eslint-disable-next-line
   }, [cityName]);
 
   // status - warning. IsSearch becomes true when the Enter button is pressed (see Sidebar)
@@ -72,6 +75,7 @@ export default function useNotification() {
     } else {
       dispatch(setIsSearch(!isSearch));
     }
+    // eslint-disable-next-line
   }, [isSearch]);
 
   return messageNotifications;

@@ -29,6 +29,7 @@ export default function Sidebar() {
   const cityName = useAppSelector((state) => state.cityName);
   const weather = useAppSelector((state) => state.weather);
   const isSearch = useAppSelector((state) => state.isSearch);
+  const appMode = useAppSelector((state) => state.appMode);
   const dispatch = useAppDispatch();
 
   // hooks
@@ -61,7 +62,9 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside className="sidebar">
+      <aside
+        className={appMode === "dark" ? "sidebar sidebar__dark" : "sidebar"}
+      >
         {responseStatus}
         <div className="sidebar_search">
           <div>

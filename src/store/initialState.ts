@@ -4,6 +4,8 @@ const initialState: IInitialState = {
   cityName: "Moscow",
   searchCityErr: null,
   isSearch: false,
+  appMode: "light",
+  isAppMode: false,
   loadingWeather: false,
   weather: {
     cod: "",

@@ -4,10 +4,14 @@ import { useEffect, useState } from "react";
 // store
 import { useAppDispatch, useAppSelector } from "../store/store";
 import getWeatherData from "../store/asyncThunk";
+import { setIsAppMode } from "../store/slice";
 
 // services
 import getCurrentPosition from "../services/getCurrentPosition";
 import { getWeatherTime, getDayOfTheWeek } from "../services/getTimeFormat";
+
+// antd
+import { Switch } from "antd";
 
 // style
 import "../styles/Weather.css";
@@ -22,6 +26,8 @@ export default function Weather() {
   const [changeMetric, setChangeMetric] = useState(true);
   const cityName = useAppSelector((state) => state.cityName);
   const weather = useAppSelector((state) => state.weather);
+  const appMode = useAppSelector((state) => state.appMode);
+  const isAppMode = useAppSelector((state) => state.isAppMode);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -43,6 +49,16 @@ export default function Weather() {
     <div className="weather">
       <div className="weather_head">
         <h3>Weather data</h3>
+        <div className="weather_head__switcherAppMode">
+          <Switch
+            checked={isAppMode}
+            checkedChildren="light"
+            unCheckedChildren="dark"
+            onChange={() => {
+              dispatch(setIsAppMode(!isAppMode));
+            }}
+          />
+        </div>
         <div className="weather_head__tmpSwitcher">
           <span
             className={changeMetric ? "weather_head__active" : ""}
@@ -59,7 +75,13 @@ export default function Weather() {
         </div>
       </div>
       <div className="weather_main">
-        <div className="weather5days">
+        <div
+          className={
+            appMode === "dark"
+              ? "weather5days weather5days__dark"
+              : "weather5days"
+          }
+        >
           {weather.list.map((el) => {
             return (
               <div key={el.dt}>
@@ -79,7 +101,13 @@ export default function Weather() {
             );
           })}
         </div>
-        <div className="weatherMetoToday">
+        <div
+          className={
+            appMode === "dark"
+              ? "weatherMetoToday weatherMetoToday__dark"
+              : "weatherMetoToday"
+          }
+        >
           <div className="weatherMetoToday_wind">
             <h4>Wind Status</h4>
             <p>{weather.list[0].wind.speed} m/s</p>

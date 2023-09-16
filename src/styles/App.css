@@ -1,5 +1,7 @@
 /* #f6f6f7 #A4A6AC #D4C4B4 #5E5353 #1E1714 #5A497E #FEA31F #FBBC2E*/
 
+/* #212529 #343a40 #e9ecef */
+
 * {
   font-size: 16px;
 }
@@ -8,6 +10,11 @@
   background: #f6f6f7;
   display: flex;
   padding: 30px;
+}
+
+.app__dark {
+  background: #212529;
+  color: #e9ecef;
 }
 
 @media screen and (max-width: 1015px) {

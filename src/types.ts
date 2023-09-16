@@ -64,6 +64,8 @@ export interface IInitialState {
   cityName: string;
   searchCityErr: null | string;
   isSearch: boolean;
+  appMode: string;
+  isAppMode: boolean;
   loadingWeather: boolean;
   weather: IWeather;
 }
