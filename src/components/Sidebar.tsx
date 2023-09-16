@@ -133,7 +133,7 @@ export default function Sidebar() {
             src={geoposition}
             alt="geoposition"
             onClick={() => getPosition()}
-            onTouchStart={() => getPosition()}
+            onTouchStart={() => setCityName("122333")}
           />
         </div>
         <div className="sidebar_weather">
