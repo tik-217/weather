@@ -5,7 +5,8 @@ const initialState: IInitialState = {
   searchCityErr: null,
   isSearch: false,
   appMode: "light",
-  isAppMode: false,
+  isAppMode: true,
+  changeMetric: true,
   loadingWeather: false,
   weather: {
     cod: "",

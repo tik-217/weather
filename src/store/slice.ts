@@ -2,7 +2,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 // store
-import getWeatherData from "./asyncThunk";
+import { sliceWeatherDataCity, sliceWeatherDataLatLon } from "./asyncThunk";
 import initialState from "./initialState";
 
 // types
@@ -27,19 +27,35 @@ const slice = createSlice({
     setIsAppMode(state, action: PayloadAction<boolean>) {
       state.isAppMode = action.payload;
     },
+    setLoadingWeather(state, action: PayloadAction<boolean>) {
+      state.loadingWeather = action.payload;
+    },
+    setChangeMetric(state, action: PayloadAction<boolean>) {
+      state.changeMetric = action.payload;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(getWeatherData.pending, (state) => {
+    builder.addCase(sliceWeatherDataCity.pending, (state) => {
       state.searchCityErr = null;
+    });
+    builder.addCase(sliceWeatherDataCity.fulfilled, (state, action) => {
+      state.weather = action.payload;
       state.loadingWeather = true;
     });
-    builder.addCase(getWeatherData.fulfilled, (state, action) => {
-      state.loadingWeather = false;
-      state.weather = action.payload;
-    });
-    builder.addCase(getWeatherData.rejected, (state) => {
-      state.loadingWeather = false;
+    builder.addCase(sliceWeatherDataCity.rejected, (state) => {
       state.searchCityErr = "Error accessing the API";
+      state.loadingWeather = true;
+    });
+    builder.addCase(sliceWeatherDataLatLon.pending, (state) => {
+      state.searchCityErr = null;
+    });
+    builder.addCase(sliceWeatherDataLatLon.fulfilled, (state, action) => {
+      state.weather = action.payload;
+      state.loadingWeather = true;
+    });
+    builder.addCase(sliceWeatherDataLatLon.rejected, (state) => {
+      state.searchCityErr = "Error accessing the API";
+      state.loadingWeather = true;
     });
   },
 });
@@ -50,6 +66,8 @@ export const {
   setIsSearch,
   setAppMode,
   setIsAppMode,
+  setLoadingWeather,
+  setChangeMetric,
 } = slice.actions;
 
 export default slice.reducer;

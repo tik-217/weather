@@ -3,20 +3,17 @@ import { useEffect } from "react";
 
 // store
 import { useAppDispatch, useAppSelector } from "../store/store";
+import { setIsSearch } from "../store/slice";
 
 // antd
 import { message } from "antd";
-import { setIsSearch } from "../store/slice";
-
-// // store
-// import getWeatherData from "../store/asyncThunk";
 
 export default function useNotification() {
+  // state
   const loading = useAppSelector((state) => state.loadingWeather);
   const cityName = useAppSelector((state) => state.cityName);
   const searchCityErr = useAppSelector((state) => state.searchCityErr);
   const isSearch = useAppSelector((state) => state.isSearch);
-
   const dispatch = useAppDispatch();
 
   // antd
@@ -24,15 +21,23 @@ export default function useNotification() {
 
   // status - loading
   useEffect(() => {
-    if (loading === false) return;
+    if (searchCityErr !== null) return;
 
-    messageApi
-      .open({
-        type: "loading",
-        content: "Loading...",
-        duration: 0.5,
-      })
-      .then(() => message.success("Loading finished", 0.8));
+    if (loading) {
+      messageApi
+        .open({
+          type: "loading",
+          content: "Loading...",
+          duration: 0.5,
+        })
+        .then(() => {
+          messageApi.open({
+            type: "success",
+            content: "Loaded!",
+            duration: 1,
+          });
+        });
+    }
     // eslint-disable-next-line
   }, [loading]);
 
@@ -47,20 +52,6 @@ export default function useNotification() {
     });
     // eslint-disable-next-line
   }, [searchCityErr]);
-
-  // status - loading (fot the current position)
-  useEffect(() => {
-    if (cityName === "Current location") {
-      messageApi
-        .open({
-          type: "loading",
-          content: "Loading...",
-          duration: 0.5,
-        })
-        .then(() => message.success("Loading finished", 0.8));
-    }
-    // eslint-disable-next-line
-  }, [cityName]);
 
   // status - warning. IsSearch becomes true when the Enter button is pressed (see Sidebar)
   useEffect(() => {

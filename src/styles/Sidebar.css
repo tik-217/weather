@@ -1,5 +1,6 @@
 .sidebar {
   flex: 3;
+  flex-grow: 0;
   background: #fff;
   border-radius: 20px;
   padding: 35px;
@@ -55,12 +56,12 @@
 .weatherInfo_image img {
   width: 85%;
   margin: 20px auto;
+  max-width: 250px;
 }
 
 .weatherInfo_desc {
   display: flex;
   flex-direction: column;
-  /* margin-left: 10px; */
 }
 
 .weatherInfo_desc h2 {
@@ -70,7 +71,7 @@
 }
 
 .weatherInfo_desc p {
-  margin: 0 0 10px;
+  margin: 0;
   color: #a4a6ac;
 }
 
@@ -78,11 +79,12 @@
   height: 2px;
   border: none;
   background: #f6f6f7;
+  margin: 10px 0;
   width: 100%;
 }
 
 .weatherInfo_desc__meta1 {
-  margin: 15px 0 10px;
+  margin: 0 0 20px;
 }
 
 .weatherInfo_geoposition > div {

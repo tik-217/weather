@@ -1,15 +1,25 @@
-/* #f6f6f7 #A4A6AC #D4C4B4 #5E5353 #1E1714 #5A497E #FEA31F #FBBC2E*/
+/* 
 
-/* #212529 #343a40 #e9ecef */
+Main colors:
+1. #efefef
+2. #A4A6AC
+3. #FBBC2E
+4. #212529
+5. #343a40 
+6. #e9ecef 
+
+*/
 
 * {
   font-size: 16px;
 }
 
 .app {
-  background: #f6f6f7;
+  background: #efefef;
   display: flex;
   padding: 30px;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .app__dark {
@@ -17,6 +27,15 @@
   color: #e9ecef;
 }
 
+@media screen and (max-height: 1110px) {
+  #root {
+    height: auto;
+  }
+
+  .app {
+    height: auto;
+  }
+}
 @media screen and (max-width: 1015px) {
   .app {
     flex-direction: column;
@@ -30,5 +49,11 @@
 
   .app {
     padding: 20px;
+  }
+}
+
+@media screen and (max-height: 1140px) {
+  .app {
+    height: 100%;
   }
 }

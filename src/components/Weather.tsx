@@ -1,13 +1,17 @@
-// react
-import { useEffect, useState } from "react";
-
 // store
 import { useAppDispatch, useAppSelector } from "../store/store";
-import getWeatherData from "../store/asyncThunk";
-import { setIsAppMode } from "../store/slice";
+import {
+  sliceWeatherDataCity,
+  sliceWeatherDataLatLon,
+} from "../store/asyncThunk";
+import {
+  setIsAppMode,
+  setIsSearch,
+  setLoadingWeather,
+  setChangeMetric,
+} from "../store/slice";
 
 // services
-import getCurrentPosition from "../services/getCurrentPosition";
 import { getWeatherTime, getDayOfTheWeek } from "../services/getTimeFormat";
 
 // antd
@@ -23,27 +27,34 @@ import arrowDown from "../assets/image/icons/arrow-button-circle-down-1.svg";
 
 export default function Weather() {
   // state
-  const [changeMetric, setChangeMetric] = useState(true);
-  const cityName = useAppSelector((state) => state.cityName);
+  const changeMetric = useAppSelector((state) => state.changeMetric);
   const weather = useAppSelector((state) => state.weather);
+  const cityName = useAppSelector((state) => state.cityName);
   const appMode = useAppSelector((state) => state.appMode);
   const isAppMode = useAppSelector((state) => state.isAppMode);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    (async () => {
-      if (cityName === "Current location") {
-        await getCurrentPosition();
-      }
-
-      if (changeMetric) {
-        dispatch(getWeatherData({ cityName, units: "metric" }));
+  async function changeMetricHandler(payload: boolean) {
+    async function chooseApiCall(units: string) {
+      if (cityName.length === 0) {
+        dispatch(setLoadingWeather(false));
+        await dispatch(sliceWeatherDataLatLon(units));
       } else {
-        dispatch(getWeatherData({ cityName, units: "imperial" }));
+        dispatch(setLoadingWeather(false));
+        await dispatch(sliceWeatherDataCity({ cityName, units }));
       }
-    })();
-    // eslint-disable-next-line
-  }, [changeMetric]);
+    }
+
+    if (payload) {
+      dispatch(setChangeMetric(true));
+      dispatch(setIsSearch(true));
+      chooseApiCall("metric");
+    } else {
+      dispatch(setChangeMetric(false));
+      dispatch(setIsSearch(true));
+      chooseApiCall("imperial");
+    }
+  }
 
   return (
     <div className="weather">
@@ -62,13 +73,13 @@ export default function Weather() {
         <div className="weather_head__tmpSwitcher">
           <span
             className={changeMetric ? "weather_head__active" : ""}
-            onClick={() => setChangeMetric(true)}
+            onClick={() => changeMetricHandler(true)}
           >
             °C
           </span>
           <span
             className={!changeMetric ? "weather_head__active" : ""}
-            onClick={() => setChangeMetric(false)}
+            onClick={() => changeMetricHandler(false)}
           >
             °F
           </span>
@@ -93,10 +104,7 @@ export default function Weather() {
                     alt=""
                   />
                 )}
-                <section>
-                  <span>{Math.floor(el.main.temp_max)}°</span>
-                  <span>{Math.floor(el.main.temp_min)}°</span>
-                </section>
+                <span>{Math.floor(el.main.temp_max)}°</span>
               </div>
             );
           })}
@@ -123,6 +131,11 @@ export default function Weather() {
               <img src={arrowDown} alt="arrowDown" />
               <span>{getWeatherTime(weather.city.sunset)}</span>
             </section>
+          </div>
+          <div className="weatherMetoToday_pressure">
+            <h4>Pressure</h4>
+            <p>{weather.list[0].main.pressure} mm Hg</p>
+            <div></div>
           </div>
           <div className="weatherMetoToday_humidity">
             <h4>Humidity</h4>

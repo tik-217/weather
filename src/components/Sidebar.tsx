@@ -1,16 +1,13 @@
 // react
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // store
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { setCityName, setIsSearch, setWeather } from "../store/slice";
-import getWeatherData from "../store/asyncThunk";
-
-// api
-import { weatherDataLatLon } from "../api/weather-data";
-
-// services
-import getCurrentPosition from "../services/getCurrentPosition";
+import { setCityName, setIsSearch, setLoadingWeather } from "../store/slice";
+import {
+  sliceWeatherDataCity,
+  sliceWeatherDataLatLon,
+} from "../store/asyncThunk";
 
 // hooks
 import useNotification from "../hooks/useNotification";
@@ -26,9 +23,9 @@ import geophoto from "../assets/image/carlos-torres-MHNjEBeLTgw-unsplash.jpg";
 
 export default function Sidebar() {
   // state
-  const cityName = useAppSelector((state) => state.cityName);
-  const weather = useAppSelector((state) => state.weather);
+  const [inputValue, setInputValue] = useState("Moscow");
   const isSearch = useAppSelector((state) => state.isSearch);
+  const weather = useAppSelector((state) => state.weather);
   const appMode = useAppSelector((state) => state.appMode);
   const dispatch = useAppDispatch();
 
@@ -36,12 +33,13 @@ export default function Sidebar() {
   const responseStatus = useNotification();
   const weatherTime = useWeatherDate();
 
-  function searchCity(e: React.KeyboardEvent<HTMLInputElement>) {
+  async function searchCity(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.code === "Enter") {
       const searchValue = (e.nativeEvent.target as HTMLInputElement).value;
 
-      if (cityName.length !== 0) {
-        dispatch(getWeatherData({ cityName: searchValue }));
+      if (searchValue.length !== 0) {
+        dispatch(setLoadingWeather(false));
+        await dispatch(sliceWeatherDataCity({ cityName: searchValue }));
       } else {
         dispatch(setIsSearch(!isSearch));
       }
@@ -49,14 +47,17 @@ export default function Sidebar() {
   }
 
   async function getPosition() {
-    const { lat, lon } = await getCurrentPosition();
-
-    dispatch(setWeather(await weatherDataLatLon(lat, lon)));
-    dispatch(setCityName("Current location"));
+    setInputValue("Current location");
+    dispatch(setCityName(""));
+    dispatch(setLoadingWeather(false));
+    await dispatch(sliceWeatherDataLatLon("metric"));
   }
 
   useEffect(() => {
-    dispatch(getWeatherData({ cityName }));
+    dispatch(setLoadingWeather(false));
+    (async () => {
+      await dispatch(sliceWeatherDataCity({ cityName: inputValue }));
+    })();
     // eslint-disable-next-line
   }, []);
 
@@ -71,9 +72,13 @@ export default function Sidebar() {
             <img src={magnifier} alt="magnifier" />
             <input
               type="text"
-              placeholder="Search city..."
-              value={cityName}
-              onChange={(e) => dispatch(setCityName(e.target.value))}
+              placeholder={
+                inputValue === "Current location"
+                  ? "Current location"
+                  : "Search city..."
+              }
+              value={inputValue === "Current location" ? "" : inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => searchCity(e)}
             />
           </div>
@@ -109,7 +114,7 @@ export default function Sidebar() {
               <div className="weatherInfo_geoposition">
                 <div>
                   <img src={geophoto} alt="" />
-                  <p>{cityName}</p>
+                  <p>{inputValue}</p>
                 </div>
               </div>
             </div>

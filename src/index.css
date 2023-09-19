@@ -4,6 +4,12 @@
   font-weight: 400;
 }
 
+@font-face {
+  font-family: "Bitter";
+  src: url("./assets/fonts/Bitter/static/Bitter-SemiBold.ttf");
+  font-weight: 700;
+}
+
 body {
   margin: 0;
   font-family: "Bitter";

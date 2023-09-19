@@ -7,7 +7,7 @@ import Weather from "./Weather";
 
 // store
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { setAppMode, setIsAppMode } from "../store/slice";
+import { setAppMode } from "../store/slice";
 
 // styles
 import "../styles/App.css";
@@ -24,25 +24,22 @@ export default function App() {
   const sunset = weather.city.sunset * 1000;
 
   useEffect(() => {
+    if (currTime >= sunrise) {
+      dispatch(setAppMode("light"));
+    } else if (currTime >= sunset) {
+      dispatch(setAppMode("dark"));
+    }
+    // eslint-disable-next-line
+  }, [weather]);
+
+  useEffect(() => {
     if (isAppMode) {
       dispatch(setAppMode("light"));
     } else {
       dispatch(setAppMode("dark"));
     }
     // eslint-disable-next-line
-  }, [isAppMode]);
-
-  useEffect(() => {
-    if (currTime >= sunrise) {
-      dispatch(setAppMode("light"));
-      dispatch(setIsAppMode(true));
-    }
-    if (currTime >= sunset) {
-      dispatch(setAppMode("dark"));
-      dispatch(setIsAppMode(false));
-    }
-    // eslint-disable-next-line
-  }, [weather]);
+  }, [weather, isAppMode]);
 
   return (
     <div className={appMode === "dark" ? "app app__dark" : "app"}>

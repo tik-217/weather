@@ -1,6 +1,8 @@
 .weather {
   flex: 11;
   padding: 35px;
+  overflow: hidden;
+  height: fit-content;
 }
 
 .weather_head {
@@ -12,6 +14,7 @@
 .weather_head h3 {
   margin: 0 20px 0;
   font-size: 1.9em;
+  font-weight: 700;
 }
 
 .weather_head__tmpSwitcher span {
@@ -36,8 +39,7 @@
 .weather5days {
   margin-top: 30px;
   display: flex;
-  width: 68vw;
-  overflow-y: auto;
+  overflow: scroll;
 }
 
 .weather5days > div {
@@ -55,7 +57,7 @@
 }
 
 .weather5days > div > h5 {
-  font-size: 1.1em;
+  font-size: 1.5em;
   margin: 0;
 }
 
@@ -69,9 +71,8 @@
   margin-bottom: 15px;
 }
 
-.weather5days section span:last-child {
-  margin-left: 5px;
-  color: #a4a6ac;
+.weather5days > div > span {
+  font-size: 1.2em;
 }
 
 .weatherMetoToday {
@@ -102,7 +103,7 @@
 }
 
 .weatherMetoToday_wind p {
-  font-size: 2.5em;
+  font-size: 2em;
   margin: 20px 0;
 }
 
@@ -130,8 +131,19 @@
   font-size: 1.2em;
 }
 
+.weatherMetoToday_pressure p {
+  font-size: 2em;
+}
+
+.weatherMetoToday_pressure > div {
+  width: 100%;
+  height: 10px;
+  background: #32cf7b;
+  border-radius: 20px;
+}
+
 .weatherMetoToday_humidity p {
-  font-size: 2.5em;
+  font-size: 2em;
 }
 
 .weatherMetoToday_humidity > div {
@@ -142,7 +154,7 @@
 }
 
 .weatherMetoToday_visibility p {
-  font-size: 2.5em;
+  font-size: 2em;
 }
 
 .weatherMetoToday_visibility > div {
@@ -152,19 +164,29 @@
   border-radius: 20px;
 }
 
-@media screen and (max-width: 1260px) {
-  .weather5days {
-    width: 60vw;
+@media screen and (min-width: 2000px) {
+  .weather .weatherMetoToday {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media screen and (min-width: 1560px) {
+  .weatherMetoToday {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media screen and (max-width: 1015px) {
+  .weather {
+    overflow: visible;
+  }
+
   .weather5days {
     width: 100%;
   }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
   .weather {
     padding: 35px 0;
   }
@@ -175,8 +197,43 @@
 }
 
 @media screen and (max-width: 500px) {
+  .sidebar {
+    padding: 25px;
+  }
+
+  .weather_head {
+    grid-template-columns: 4fr 1fr;
+    grid-template-rows: 1fr 2fr;
+    justify-items: center;
+    row-gap: 10px;
+  }
+
+  .weather_head h3 {
+    grid-row: span 2;
+    justify-self: flex-start;
+    margin: 0;
+  }
+
+  .weather_head__tmpSwitcher {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 10px;
+  }
+
+  .weather_head__tmpSwitcher span {
+    margin: 0;
+  }
+
   .weather5days > div {
     padding: 20px 15px;
+  }
+
+  .weather5days > div > p {
+    margin: 5px 0 0;
+  }
+
+  .weather5days > div > img {
+    margin-bottom: 5px;
   }
 
   .weatherMetoToday_wind p {
